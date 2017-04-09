@@ -1,0 +1,13 @@
+body {
+    font: 100%/1.2 serif;
+    margin: 0;
+    padding: 30vh 30vw;
+}
+
+h2 {
+    background: #CCC;
+    text-align: center;
+    color: #EC625F;
+    font-size: 40px;
+    padding: 3em 0;
+}

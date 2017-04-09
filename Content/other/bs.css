@@ -1,0 +1,9 @@
+.btn {
+    outline: none;
+    border: none;
+}
+
+.btn-primary {
+    transition: all .8989s;
+    transform: translate(30px) rotateX('40deg') skew(60deg);
+}
