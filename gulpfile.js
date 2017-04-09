@@ -13,7 +13,7 @@ const cssFiles = ['**/*.css', '!**/*min.css'];
 const tsFiles = ['src/**/*.ts'];
 const jsFiles = ['src/**/*.js']
 const htmlFiles = ['*.html']
-const webApp = ''; // localhost/jdzweb
+const webAppSite = ''; // localhost/jdzweb
 const openBrowser = false; // true is: open your default browser automatically
 
 gulp.task('browser-sync', function () {
