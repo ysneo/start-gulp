@@ -2,6 +2,8 @@
 
 ## Build setup
 
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
+
 1. Install nodejs form  [Fly to Download](https://nodejs.org/en/).  
 
     By the way , to check you already installed nodejs or not;
