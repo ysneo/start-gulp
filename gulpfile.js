@@ -14,35 +14,42 @@ const tsFiles = ['src/**/*.ts'];
 const jsFiles = ['src/**/*.js']
 const htmlFiles = ['*.html']
 const webApp = ''; // localhost/jdzweb
+const openBrowser = false; // true is: open your default browser automatically
 
-var runBuildTypescript = function () {
+gulp.task('browser-sync', function () {
+    initBrowserSync();
+});
+
+gulp.task('build-ts', runBuildTypescript);
+
+gulp.task('clean-css', runCleanCss);
+
+gulp.task('default', ['build-ts', 'clean-css'], function () {
+    initBrowserSync();
+    watchFiles();
+});
+
+gulp.task('clean', function () {
+    //TODO: clean files which created by task-default;
+    // rimraf();
+});
+
+
+function runBuildTypescript() {
     var result = gulp.src(tsFiles, {
             base: '.'
         })
+        .pipe(sourcemaps.init())
         .pipe(tsProject());
 
     return result.js
-        .pipe(gulp.dest('.'))
-        .on('finish', function () {
-            console.log('build typescript successfully');
-            runCompressJS();
-        });
-};
-
-var runCompressJS = function () {
-    return gulp.src(jsFiles, {
-            base: '.'
-        })
-        .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('.'))
-        .on('finish', function () {
-            console.log('output js successfully');
-        });
-};
+        .pipe(browserSync.stream())
+}
 
-var runCleanCss = function () {
+function runCleanCss() {
     let result = gulp.src(cssFiles, {
             base: '.'
         })
@@ -55,42 +62,44 @@ var runCleanCss = function () {
         }))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('.'))
-        .pipe(browserSync.stream())
+        .pipe(browserSync.stream({
+            match: '**/*.css'
+        }))
         .on('finish', function () {
             console.log('clean css successfully');
         });
 
     return result;
-};
+}
 
-var initBrowserSync = function () {
-    browserSync.init({
+function initBrowserSync() {
+    return browserSync.init({
         server: {
             baseDir: "./",
             index: 'index.html'
         },
         port: 80,
         logLevel: 'info',
-        logFileChanges: true, //TODO: can't see the log which file changed
+        logFileChanges: false,
         logConnections: true,
         ui: {
             port: 3001
         },
-        logPrefix: "DHI DSS"
+        logPrefix: "DHI DSS",
+        open: openBrowser
     });
-};
+}
 
-var browserReload = function () {
-    browserSync.reload({
-        stream: true
-    });
-};
+function browserReload() {
+    return browserSync.reload();
+}
 
-var watchFiles = function () {
+function watchFiles() {
+    console.log('watch start');
     var watchOption = {
         readDelay: 200,
         awaitWriteFinish: {
-            stabilityThreshold: 1000,
+            stabilityThreshold: 800,
             pollInterval: 300
         }
     };
@@ -108,23 +117,4 @@ var watchFiles = function () {
     watch(htmlFiles, watchOption, function () {
         browserReload();
     });
-};
-
-gulp.task('browser-sync', function () {
-    initBrowserSync();
-});
-
-gulp.task('build-ts', runBuildTypescript);
-
-gulp.task('clean-css', runCleanCss);
-
-gulp.task('default', ['build-ts', 'clean-css'], function () {
-    initBrowserSync();
-    watchFiles();
-});
-
-
-gulp.task('clean', function () {
-    //TODO: clean files which created by task-default;
-    // rimraf();
-});
+}
