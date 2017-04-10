@@ -9,10 +9,12 @@ const browserSync = require('browser-sync').create();
 const rimraf = require('rimraf');
 
 const tsProject = ts.createProject('tsconfig.json');
-const cssFiles = ['**/*.css', '!**/*min.css'];
-const tsFiles = ['src/**/*.ts'];
-const jsFiles = ['src/**/*.js']
-const htmlFiles = ['*.html']
+const path = {
+    src: 'src/app/components/'
+};
+const cssFiles = ['content/site.css', '!content/site.min.css', path.src + '**/*.css', '!' + path.src + '**/*min.css'];
+const tsFiles = ['src/*.ts', path.src + '**/*.ts'];
+const htmlFiles = ['*.html'];
 const webAppSite = ''; // localhost/jdzweb
 const openBrowser = false; // true is: open your default browser automatically
 
@@ -25,8 +27,8 @@ gulp.task('build-ts', runBuildTypescript);
 gulp.task('clean-css', runCleanCss);
 
 gulp.task('default', ['build-ts', 'clean-css'], function () {
-    initBrowserSync();
-    watchFiles();
+    // initBrowserSync();
+    // watchFiles();
 });
 
 gulp.task('clean', function () {
