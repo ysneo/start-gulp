@@ -6,9 +6,6 @@
         "sourceMap": true,
         "removeComments": true
     },
-    "include": [
-        "src/**/*.ts"
-    ],
     "exclude": [
         "node_modules"
     ]
